@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="Typing.css">
+</head>
+
+<body>
+    <div class="mainDiv">
+        <div class="centerDiv">
+            <h1>Custome Typing Test</h1>
+            <h2 id="msg"></h2>
+            <br>
+            <textarea id="mywords" cols="70" rows="10" placeholder="Have a Good Day!.."></textarea>
+            <br>
+            <button id="btn" class="mainbtn">Start Typing</button>
+        </div>
+    </div>
+
+    <script>
+        const setOfWords = [
+            "The Kite Runner is the story of Amir, a Sunni Muslim, who struggles to find his place in the world because of the",
+            "One day a mother duck noticed her eggs were hatching.",
+            "One by one they hatched until the largest one was left."
+        ];
+        var msg = document.getElementById('msg')
+        var typeWords = document.getElementById("mywords")
+        var btn = document.getElementById("btn")
+        let startTime, endTime;
+
+        const playGame = () => {
+            let randomNumber = Math.floor(Math.random() * setOfWords.length)
+            msg.innerText = setOfWords[randomNumber]
+            let date = new Date()
+            startTime = date.getTime()
+            btn.innerText = "Done"
+        }
+        const endPlay = () => {
+            let date = new Date();
+            endTime = date.getTime();
+            let totalTime = ((endTime - startTime) / 1000);
+
+            let totalStr = typeWords.value;
+            let wordCount = wordCounter(totalStr);
+
+            console.log(wordCount);
+            let spd = Math.round((wordCount / totalTime) * 60);
+            let finalMsg = "You typed at " + spd + " words per minutes ";
+
+            finalMsg += compareWords(msg.innerText, totalStr)
+            msg.innerText = finalMsg;
+        }
+        const wordCounter = (str) => {
+            let response = str.split(" ").length;
+            return response
+        }
+        const compareWords = (str1, str2) => {
+            let words1 = str1.split(" ");
+            let words2 = str2.split(" ");
+            let cnt = 0;
+
+            words1.forEach(function (item, index) {
+                if (item == words2[index]) {
+                    cnt++;
+                }
+            });
+
+            let errorWords = (words1.length - cnt);
+            return (cnt + " coorect out of " + words1.length + " words and Total Error are " + errorWords)
+        }
+
+        btn.addEventListener('click', function () {
+            if (this.innerText == 'Start Typing') {
+                typeWords.disabled = false;
+                playGame();
+            } else if (this.innerText == 'Done') {
+                typeWords.disabled = true;
+                btn.innerText = "Start Typing"
+                endPlay();
+            }
+
+        })
+    </script>
+</body>
+
+</html>
